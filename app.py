@@ -4,19 +4,19 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import pandas as pd
 
-# =====================
-# Google Sheets 認証
-# =====================
+# ========= Google Sheets 認証 (Secretsから読み込み) =========
+creds_dict = st.secrets["gcp_service_account"]
+
 scope = ["https://spreadsheets.google.com/feeds",
          "https://www.googleapis.com/auth/drive"]
 
-# Colabで使っていた service_account.json を同じフォルダに置くこと！
-creds = ServiceAccountCredentials.from_json_keyfile_name("yogurtapp-7c8985b8ee03.json", scope)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 gc = gspread.authorize(creds)
 
 SPREADSHEET_ID = "1-6TncaQSXhRURxpJU7a-uw-5jDIYPDi9YzOKjQPnHF8"
 sh = gc.open_by_key(SPREADSHEET_ID)
 worksheet = sh.sheet1
+
 
 # =====================
 # UI
@@ -66,3 +66,4 @@ data = worksheet.get_all_records()
 df = pd.DataFrame(data)
 st.subheader("📒 記録一覧（直近5件）")
 st.dataframe(df.tail(5))
+
