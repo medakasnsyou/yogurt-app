@@ -1,21 +1,21 @@
 import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from datetime import datetime
-import pandas as pd
 
-# ========= Google Sheets 認証 (Secretsから読み込み) =========
-creds_dict = st.secrets["gcp_service_account"]
+# ========= Google Sheets 認証（Secretsから読み込み） =========
+creds_dict = st.secrets["gcp_service_account"]  # ← Secrets の [gcp_service_account] を読む
 
-scope = ["https://spreadsheets.google.com/feeds",
-         "https://www.googleapis.com/auth/drive"]
-
+scope = [
+    "https://spreadsheets.google.com/feeds",
+    "https://www.googleapis.com/auth/drive"
+]
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 gc = gspread.authorize(creds)
 
-SPREADSHEET_ID = "1-6TncaQSXhRURxpJU7a-uw-5jDIYPDi9YzOKjQPnHF8"
+SPREADSHEET_ID = "1-6TncaQSXhRURxpJU7a-uw-5jDIYPDi9YzOKjQPnHF8"  # ← あなたのID
 sh = gc.open_by_key(SPREADSHEET_ID)
 worksheet = sh.sheet1
+
 
 
 # =====================
@@ -66,4 +66,5 @@ data = worksheet.get_all_records()
 df = pd.DataFrame(data)
 st.subheader("📒 記録一覧（直近5件）")
 st.dataframe(df.tail(5))
+
 
