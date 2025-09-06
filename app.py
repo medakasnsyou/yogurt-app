@@ -24,25 +24,23 @@ worksheet = sh.sheet1
 # =====================
 st.title("🥛 ヨーグルト記録アプリ")
 
-date = st.date_input("仕込み日", datetime.now())
-milk1 = st.selectbox("牛乳1", ["低脂肪","無調整","豆乳","ブレンド"])
-milk1_ratio = st.slider("割合1(%)", 0, 100, 50, 10)
-milk1_amount = st.number_input("量1(ml)", 0, 2000, 500)
+date_input = st.date_input("仕込み日", datetime.now().date())
+milk_type1  = st.selectbox("牛乳1", ["低脂肪","無調整","豆乳","ブレンド"])
+milk_ratio1 = st.slider("割合1(%)", 0, 100, 50, 10)
+milk_amount1= st.number_input("量1(ml)", min_value=0, value=500)
 
-milk2 = st.selectbox("牛乳2", ["-","低脂肪","無調整","豆乳","ブレンド"])
-milk2_ratio = st.slider("割合2(%)", 0, 100, 0, 10)
-milk2_amount = st.number_input("量2(ml)", 0, 2000, 0)
+milk_type2  = st.selectbox("牛乳2", ["-","低脂肪","無調整","豆乳","ブレンド"])
+milk_ratio2 = st.slider("割合2(%)", 0, 100, 0, 10)
+milk_amount2= st.number_input("量2(ml)", min_value=0, value=0)
 
-brand = st.text_input("メーカー")
-starter_name = st.text_input("種ヨーグルト名")
-starter_amount = st.number_input("種ヨーグルト量(g)", 0, 100, 20)
-
-temp = st.slider("発酵温度(℃)", 30, 50, 42)
-time = st.slider("発酵時間(h)", 1, 12, 8)
-drain = st.slider("水切り時間(h)", 0, 12, 0)
-
-result = st.number_input("出来上がり量(g)", 0, 1000, 200)
-memo = st.text_area("メモ")
+milk_brand  = st.text_input("メーカー")
+starter_name   = st.text_input("種ヨーグルト")
+starter_amount = st.number_input("種ヨーグルト量(g)", min_value=0, value=20)
+fermentation_temp = st.slider("発酵温度(℃)", 30, 50, 42)
+fermentation_time = st.slider("発酵時間(h)", 1, 12, 8)
+drain_time        = st.slider("水切り(h)", 0, 12, 0)
+result_weight = st.number_input("出来上がり(g)", min_value=0, value=200)
+memo          = st.text_input("メモ")
 
 # =====================
 # 保存処理
@@ -85,6 +83,7 @@ if not df.empty:
         </div>
         """
         st.markdown(card_html, unsafe_allow_html=True)
+
 
 
 
