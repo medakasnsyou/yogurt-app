@@ -60,13 +60,33 @@ if st.button("記録する"):
     worksheet.append_row(record)
     st.success("✅ スプレッドシートに保存しました！")
 
-# =====================
-# 表示
-# =====================
+# --- 直近の記録表示 ---
 data = worksheet.get_all_records()
 df = pd.DataFrame(data)
-st.subheader("📒 記録一覧（直近5件）")
-st.dataframe(df.tail(5))
+
+if not df.empty:
+    st.subheader("📒 直近の記録")
+    # 直近5件
+    for _, row in df.tail(5).iterrows():
+        card_html = f"""
+        <div style="border:1px solid #e5e7eb;border-radius:12px;
+                    padding:12px;margin:8px 0;
+                    box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+          <div>📅 <b>仕込み日</b>: {row.get('仕込み日','')}</div>
+          <div>🥛 <b>牛乳1</b>: {row.get('牛乳1','')} ({row.get('量1(ml)','')}ml, {row.get('割合1(%)','')}%)</div>
+          <div>🥛 <b>牛乳2</b>: {row.get('牛乳2','')} ({row.get('量2(ml)','')}ml, {row.get('割合2(%)','')}%)</div>
+          <div>🏭 <b>メーカー</b>: {row.get('メーカー','')}</div>
+          <div>🧫 <b>種ヨーグルト</b>: {row.get('種ヨーグルト','')} ({row.get('種ヨーグルト量(g)','')}g)</div>
+          <div>🌡 <b>発酵温度</b>: {row.get('発酵温度(℃)','')}</div>
+          <div>⏳ <b>発酵時間</b>: {row.get('発酵時間(h)','')}h</div>
+          <div>💧 <b>水切り時間</b>: {row.get('水切り(h)','')}h</div>
+          <div>⚖️ <b>出来上がり</b>: {row.get('出来上(g)','')}</div>
+          <div>📝 <b>メモ</b>: {row.get('メモ','')}</div>
+        </div>
+        """
+        st.markdown(card_html, unsafe_allow_html=True)
+
+
 
 
 
