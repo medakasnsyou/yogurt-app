@@ -1,5 +1,6 @@
 import streamlit as st
 import gspread
+import pandas as pd
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 # ========= Google Sheets 認証（Secretsから読み込み） =========
@@ -66,6 +67,7 @@ data = worksheet.get_all_records()
 df = pd.DataFrame(data)
 st.subheader("📒 記録一覧（直近5件）")
 st.dataframe(df.tail(5))
+
 
 
 
